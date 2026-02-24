@@ -1,0 +1,303 @@
+/* ==========================================================================
+   Forms — CF7 + MC4WP Newsletter
+   ========================================================================== */
+
+/* ---------- CF7 General ---------- */
+.wpcf7 {
+    max-width: 600px;
+}
+
+.wpcf7 input[type="text"],
+.wpcf7 input[type="email"],
+.wpcf7 input[type="tel"],
+.wpcf7 select,
+.wpcf7 textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--theme-form-field-border-initial-color, var(--theme-border-color, #e2e8f0));
+    border-radius: var(--theme-form-field-border-radius, var(--steelmark-card-radius, 20px));
+    font-family: var(--wp--preset--font-family--inter, 'Inter', sans-serif);
+    font-size: var(--steelmark-font-size-base);
+    color: var(--theme-form-field-text-initial-color, var(--theme-palette-color-4, #1a1a1a));
+    background: var(--theme-form-field-background-initial-color, var(--theme-palette-color-7));
+    transition: border-color var(--steelmark-transition-fast), box-shadow var(--steelmark-transition-fast);
+    box-sizing: border-box;
+}
+
+.wpcf7 input[type="text"]:focus,
+.wpcf7 input[type="email"]:focus,
+.wpcf7 input[type="tel"]:focus,
+.wpcf7 select:focus,
+.wpcf7 textarea:focus {
+    outline: none;
+    border-color: var(--theme-form-field-border-focus-color, var(--theme-palette-color-1, #004170));
+    box-shadow: var(--steelmark-focus-ring);
+}
+
+.wpcf7 select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+/* Unified placeholder color for inputs and select */
+.wpcf7 input::placeholder,
+.wpcf7 textarea::placeholder {
+    color: #6B7280;
+    opacity: 1;
+}
+
+.wpcf7 select:has(option[value=""]:checked) {
+    color: #6B7280;
+}
+
+.wpcf7 select option {
+    color: var(--theme-palette-color-4, #1a1a1a);
+}
+
+.wpcf7 select.wpcf7-not-valid {
+    border-color: var(--steelmark-color-error) !important;
+}
+
+.wpcf7 textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.wpcf7 input[type="submit"] {
+    display: inline-block;
+    background-color: var(--theme-button-background-initial-color, var(--theme-palette-color-3));
+    color: var(--theme-button-text-initial-color, var(--theme-palette-color-7));
+    padding: var(--theme-button-padding, 0.75rem 2rem);
+    border: none;
+    border-radius: var(--theme-button-border-radius, var(--steelmark-card-radius, 20px));
+    font-family: var(--wp--preset--font-family--inter, 'Inter', sans-serif);
+    font-size: var(--steelmark-font-size-base);
+    font-weight: var(--theme-button-font-weight, 700);
+    text-transform: var(--theme-button-text-transform, uppercase);
+    letter-spacing: var(--theme-button-letter-spacing, 0.03em);
+    cursor: pointer;
+    transition: all var(--steelmark-transition);
+}
+
+.wpcf7 input[type="submit"]:hover {
+    background-color: var(--steelmark-cta-hover);
+    transform: var(--steelmark-hover-lift-sm);
+    box-shadow: var(--steelmark-shadow-btn-hover);
+}
+
+/* CF7 field spacing */
+.wpcf7 p {
+    margin-bottom: 1rem;
+}
+
+.wpcf7 p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* ---------- CF7 Two-column row ---------- */
+.cf7-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cf7-col p {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .cf7-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- CF7 Messages ---------- */
+.wpcf7-response-output {
+    border-radius: var(--steelmark-card-radius, 20px) !important;
+    padding: 0.75rem 1rem !important;
+    font-size: var(--steelmark-font-size-base-sm);
+    margin: 1rem 0 0 !important;
+}
+
+.wpcf7 form.sent .wpcf7-response-output {
+    border-color: var(--theme-palette-color-2, #7DB242) !important;
+    background-color: var(--steelmark-form-success-bg);
+    color: var(--steelmark-color-success-text);
+}
+
+.wpcf7 form.invalid .wpcf7-response-output,
+.wpcf7 form.unaccepted .wpcf7-response-output {
+    border-color: var(--steelmark-color-error) !important;
+    background-color: var(--steelmark-form-error-bg);
+    color: var(--steelmark-color-error-text);
+}
+
+.wpcf7-not-valid-tip {
+    color: var(--steelmark-color-error);
+    font-size: var(--steelmark-font-size-sm);
+    margin-top: 0.25rem;
+}
+
+.wpcf7-not-valid {
+    border-color: var(--steelmark-color-error) !important;
+}
+
+/* ---------- Product inquiry label ---------- */
+.inquiry-product-label {
+    background: var(--steelmark-inquiry-label-bg);
+    padding: 0.75rem 1rem;
+    border-radius: var(--steelmark-card-radius, 20px);
+    border-left: 3px solid var(--theme-palette-color-1, #004170);
+    margin-bottom: 1rem;
+    font-size: var(--steelmark-font-size-base);
+}
+
+/* ---------- Staff cards (contact page) ---------- */
+.staff-card {
+    background: var(--theme-palette-color-6, #f8f9fa);
+    padding: 1rem 1.25rem;
+    border-radius: var(--steelmark-card-radius, 20px);
+    margin-bottom: 0.75rem;
+}
+
+.staff-card p {
+    margin: 0;
+    line-height: var(--theme-line-height, 1.6);
+}
+
+.staff-card a {
+    color: var(--theme-palette-color-3);
+    text-decoration: none;
+}
+
+.staff-card a:hover {
+    color: var(--steelmark-cta-hover);
+}
+
+/* Contact page layout — see blocks.css for full contact page styles */
+
+/* ---------- Newsletter (footer) ---------- */
+.footer-newsletter {
+    background-color: var(--theme-palette-color-8);
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--steelmark-white-overlay-subtle);
+}
+
+.footer-newsletter .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.footer-newsletter .newsletter-desc {
+    color: var(--steelmark-text-on-dark);
+    margin: 0;
+    font-size: var(--steelmark-font-size-base);
+}
+
+.footer-newsletter .newsletter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    background: var(--theme-palette-color-3);
+    color: var(--theme-palette-color-7);
+    font-weight: var(--steelmark-font-weight-bold);
+    font-size: var(--steelmark-font-size-base);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-radius: var(--steelmark-radius-sm);
+    transition: background var(--steelmark-transition-fast);
+}
+
+.footer-newsletter .newsletter-btn:hover {
+    background: var(--steelmark-cta-hover);
+}
+
+.newsletter-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.newsletter-form p {
+    margin: 0;
+}
+
+.newsletter-form input[type="email"] {
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--steelmark-white-overlay-medium);
+    border-radius: var(--steelmark-card-radius, 20px);
+    background: var(--steelmark-white-overlay-subtle);
+    color: var(--theme-palette-color-7);
+    font-family: var(--wp--preset--font-family--inter, 'Inter', sans-serif);
+    font-size: var(--steelmark-font-size-base-sm);
+    min-width: 240px;
+    transition: border-color var(--steelmark-transition-fast), background-color var(--steelmark-transition-fast);
+}
+
+.newsletter-form input[type="email"]::placeholder {
+    color: var(--steelmark-white-overlay-heavy);
+}
+
+.newsletter-form input[type="email"]:focus {
+    outline: none;
+    border-color: var(--theme-palette-color-2, #7DB242);
+    background: var(--steelmark-white-overlay-light);
+}
+
+.newsletter-form input[type="submit"] {
+    padding: 0.625rem 1.5rem;
+    border: none;
+    border-radius: var(--steelmark-card-radius, 20px);
+    background: var(--theme-palette-color-2, #7DB242);
+    color: var(--theme-palette-color-7);
+    font-family: var(--wp--preset--font-family--inter, 'Inter', sans-serif);
+    font-size: var(--steelmark-font-size-base-sm);
+    font-weight: var(--steelmark-font-weight-semibold);
+    cursor: pointer;
+    transition: all var(--steelmark-transition);
+    white-space: nowrap;
+}
+
+.newsletter-form input[type="submit"]:hover {
+    background: var(--steelmark-green-hover);
+    transform: var(--steelmark-hover-lift-xs);
+}
+
+/* MC4WP response messages in footer */
+.footer-newsletter .mc4wp-alert {
+    color: var(--theme-palette-color-7);
+    font-size: var(--steelmark-font-size-sm);
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .footer-newsletter .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .newsletter-form {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .newsletter-form input[type="email"] {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .newsletter-form input[type="submit"] {
+        width: 100%;
+    }
+}

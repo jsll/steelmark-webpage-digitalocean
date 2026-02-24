@@ -1,0 +1,129 @@
+/* ==========================================================================
+   Product Carousel — Splide.js customization
+   ========================================================================== */
+
+.product-carousel-splide {
+    margin: 2rem 0;
+}
+
+/* Slide transitions */
+.product-carousel-splide .splide__slide {
+    transition: transform var(--steelmark-transition-carousel),
+                opacity 0.45s ease;
+    cursor: pointer;
+}
+
+.product-carousel-splide .splide__slide.is-active {
+    cursor: default;
+}
+
+/* Card styling inside slides */
+.product-carousel-splide .product-card-embed {
+    border-radius: var(--steelmark-card-radius, 20px);
+    overflow: hidden;
+    background: var(--theme-palette-color-7);
+    border: 1px solid var(--theme-border-color, #E5E7EB);
+    transition: box-shadow var(--steelmark-transition);
+}
+
+.product-carousel-splide .splide__slide.is-active .product-card-embed {
+    box-shadow: var(--steelmark-shadow-lg);
+}
+
+.product-carousel-splide .product-embed-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.product-carousel-splide .product-embed-image {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: contain;
+    padding: 1rem;
+    display: block;
+    background: var(--theme-palette-color-7);
+}
+
+.product-carousel-splide .product-embed-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 4/3;
+    background: var(--theme-palette-color-5);
+    font-size: 2.5rem;
+    font-weight: var(--steelmark-font-weight-extrabold);
+    color: var(--theme-palette-color-1);
+    opacity: 0.3;
+}
+
+.product-carousel-splide .product-embed-title {
+    display: block;
+    padding: 1rem 1.25rem;
+    font-size: var(--steelmark-font-size-base);
+    font-weight: var(--steelmark-font-weight-semibold);
+    color: var(--theme-palette-color-4);
+    line-height: 1.3;
+    text-align: left;
+}
+
+/* Arrow buttons */
+.product-carousel-splide .splide__arrow {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--theme-palette-color-7);
+    box-shadow: var(--steelmark-shadow-sm);
+    opacity: 1;
+    transition: all var(--steelmark-transition-fast);
+}
+
+.product-carousel-splide .splide__arrow svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--theme-palette-color-4);
+}
+
+.product-carousel-splide .splide__arrow:hover {
+    background: var(--theme-palette-color-1);
+}
+
+.product-carousel-splide .splide__arrow:hover svg {
+    fill: var(--theme-palette-color-7);
+}
+
+/* Pagination dots */
+.product-carousel-splide .splide__pagination {
+    bottom: -1.5rem;
+}
+
+.product-carousel-splide .splide__pagination__page {
+    width: 8px;
+    height: 8px;
+    background: var(--theme-border-color, #E5E7EB);
+    opacity: 1;
+    transition: all var(--steelmark-transition-fast);
+}
+
+.product-carousel-splide .splide__pagination__page.is-active {
+    background: var(--theme-palette-color-1);
+    transform: scale(1.25);
+}
+
+.product-carousel-splide .splide__pagination__page:hover:not(.is-active) {
+    background: var(--steelmark-text-muted);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-carousel-splide .splide__arrow {
+        width: 36px;
+        height: 36px;
+    }
+
+    .product-carousel-splide .splide__arrow svg {
+        width: 16px;
+        height: 16px;
+    }
+}

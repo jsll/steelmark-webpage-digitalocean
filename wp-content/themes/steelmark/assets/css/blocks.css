@@ -1,0 +1,688 @@
+/* ==========================================================================
+   Gutenberg Block Styling — all 12 migrated block types
+   ========================================================================== */
+
+/* ---------- Hero section overlay + text styling ---------- */
+/* Add a gradient overlay matching the hero carousel for consistent readability. */
+.hero-section[data-type="type-2"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--steelmark-hero-overlay);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.hero-section[data-type="type-2"] > header[class*="ct-container"] {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-section[data-type="type-2"] > header[class*="ct-container"] > .page-title {
+    text-shadow: var(--steelmark-heading-shadow);
+}
+
+.hero-section[data-type="type-2"] > header[class*="ct-container"] > .page-description {
+    text-shadow: var(--steelmark-text-shadow);
+}
+
+/* ---------- Hero title vertical centering ---------- */
+/* Override Blocksy's flex layout with grid so the page title is always at the
+   true vertical center, regardless of whether a description exists below it.
+   The description sits in the bottom 1fr row and doesn't shift the title up. */
+.hero-section[data-type="type-2"] > header[class*="ct-container"] {
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
+}
+
+.hero-section[data-type="type-2"] > header[class*="ct-container"] > .page-title {
+    grid-row: 2;
+    align-self: end;
+}
+
+.hero-section[data-type="type-2"] > header[class*="ct-container"] > .page-description {
+    grid-row: 3;
+    align-self: start;
+    margin-top: 20px;
+}
+
+/* ---------- Hero height — global default for all type-2 heroes ---------- */
+/* Blocksy only outputs --min-height via inline CSS when a customizer-level
+   hero_height setting exists for the page type.  For single_page there is no
+   global setting (each page uses per-page meta), so we provide the default
+   here to prevent the hero from collapsing to Blocksy's built-in 230px.
+   Page types that need different heights (e.g. categories=550px) override
+   this via Blocksy's higher-specificity [data-prefix] inline CSS. */
+.hero-section[data-type="type-2"] {
+    --min-height: 70vh;
+}
+
+/* Hero image — show top of the photo (sky/roof) rather than center */
+.hero-section[data-type="type-2"] > figure .ct-media-container img {
+    object-position: center top;
+}
+
+/* Container: max-width handled by Blocksy maxSiteWidth theme mod */
+
+/* Greenshift 12-column rows: Greenshift only emits width:100% inside mobile
+   media queries, leaving full-width columns unsized on desktop. Force 100%. */
+.gspb_row__col--12 {
+    width: 100%;
+}
+
+/* Headings: typography (size, weight, line-height, color) handled by Blocksy h1–h4 theme mods */
+
+/* Paragraphs: base color/line-height/margin handled by Blocksy rootTypography + fontColor */
+
+/* ---------- Intro text — larger body paragraph for partner descriptions ---------- */
+.entry-content .intro-text {
+    font-size: var(--steelmark-font-size-intro);
+    line-height: var(--theme-line-height, 1.7);
+    color: var(--theme-text-color);
+}
+
+/* ---------- Seeds page — centered intro + partner logo ---------- */
+.seeds-intro {
+    text-align: center;
+    margin: 0 auto 1.5em;
+    padding-top: 1rem;
+}
+
+.seeds-partner-logo {
+    text-align: center;
+    margin: 2rem auto;
+}
+
+.seeds-partner-logo .wp-block-image {
+    display: flex;
+    justify-content: center;
+}
+
+.seeds-partner-logo .wp-block-image img {
+    max-width: 200px;
+    border-radius: 0;
+}
+
+/* ---------- Freeform / Classic block ---------- */
+/* Freeform line-height handled by Blocksy rootTypography */
+
+/* Freeform h1 inside content = section heading, same size as h2 */
+.entry-content .wp-block-freeform h1 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+/* Group block heading styles handled by Blocksy h1–h4 theme mods */
+
+/* Centered intro headings — standalone h3 in a group block (matches steelmark.fi layout) */
+.entry-content > .wp-block-group > h3:only-child,
+.entry-content > .wp-block-group > .wp-block-freeform > h3:only-child {
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Consistent gap between banner (cover or archive-header) and intro */
+.entry-content > .wp-block-cover:first-child + .wp-block-group {
+    margin-top: 2rem;
+}
+
+.entry-content > .wp-block-group:first-child {
+    margin-top: 2rem;
+}
+
+/* Hide MS Editor squiggler artifacts from Drupal content */
+.entry-content .ms-editor-squiggler { display: none; }
+
+.entry-content .wp-block-freeform img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--steelmark-card-radius, 20px);
+}
+
+.entry-content .wp-block-freeform table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+}
+
+.entry-content .wp-block-freeform th,
+.entry-content .wp-block-freeform td {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--theme-border-color, #E5E7EB);
+    text-align: left;
+}
+
+.entry-content .wp-block-freeform th {
+    background-color: var(--theme-palette-color-5);
+    color: var(--theme-palette-color-4);
+    font-weight: var(--steelmark-font-weight-semibold);
+}
+
+/* ---------- Images ---------- */
+.entry-content .wp-block-image {
+    margin-bottom: 1.5em;
+}
+
+.entry-content .wp-block-image img {
+    border-radius: var(--steelmark-card-radius, 20px);
+    overflow: hidden;
+    transition: transform var(--steelmark-transition);
+}
+
+.entry-content .wp-block-image figure {
+    overflow: hidden;
+    border-radius: var(--steelmark-card-radius, 20px);
+}
+
+.entry-content .wp-block-image:hover img {
+    transform: var(--steelmark-hover-zoom-sm);
+}
+
+.entry-content .wp-block-image figcaption {
+    font-size: var(--steelmark-font-size-base-sm);
+    color: var(--steelmark-text-muted);
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+/* ---------- Gallery ---------- */
+.entry-content .wp-block-gallery.wp-block-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5em;
+}
+
+/* Override WP's .wp-block-gallery.has-nested-images figure.wp-block-image:not(#individual-image)
+   which has specificity (1,3,1) due to the :not(#id) trick and sets width: calc(50% - ...) */
+.entry-content .wp-block-gallery.has-nested-images figure.wp-block-image:not(#individual-image) {
+    width: 100%;
+    margin: 0;
+}
+
+/* Override WP's .wp-block-gallery.has-nested-images figure.wp-block-image img
+   which sets width:auto; max-width:100%!important */
+.entry-content .wp-block-gallery.has-nested-images figure.wp-block-image img {
+    width: 100% !important;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+}
+
+/* ---------- Cover ---------- */
+.entry-content .wp-block-cover {
+    border-radius: var(--steelmark-card-radius, 20px);
+    overflow: hidden;
+    margin-bottom: 1.5em;
+    min-height: 300px;
+}
+
+.entry-content .wp-block-cover.alignfull {
+    border-radius: 0;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    max-width: 100vw;
+    width: 100vw;
+}
+
+.entry-content .wp-block-cover h1,
+.entry-content .wp-block-cover h2,
+.entry-content .wp-block-cover h3,
+.entry-content .wp-block-cover h4,
+.entry-content .wp-block-cover h5,
+.entry-content .wp-block-cover h6,
+.entry-content .wp-block-cover p {
+    color: var(--theme-palette-color-7) !important;
+    text-shadow: var(--steelmark-text-shadow);
+}
+
+/* ---------- Columns ---------- */
+.entry-content .wp-block-columns {
+    gap: 2rem;
+    margin-bottom: 1.5em;
+    align-items: stretch;
+}
+
+/* Side-by-side: image column matches text column height */
+.entry-content .wp-block-column > .wp-block-image,
+.entry-content .wp-block-column > figure.wp-block-image {
+    height: 100%;
+    margin-bottom: 0;
+}
+
+.entry-content .wp-block-column > .wp-block-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Column mobile stacking handled natively by Blocksy */
+
+/* ---------- Media & Text ---------- */
+.entry-content .wp-block-media-text {
+    margin-bottom: 1.5em;
+}
+
+.entry-content .wp-block-media-text .wp-block-media-text__media img {
+    border-radius: 0;
+}
+
+@media (max-width: 768px) {
+    .entry-content .wp-block-media-text {
+        grid-template-columns: 1fr !important;
+    }
+
+    .entry-content .wp-block-media-text .wp-block-media-text__content {
+        padding: 1.5rem;
+    }
+}
+
+/* ---------- Buttons (extras beyond Blocksy theme mods) ---------- */
+.entry-content .wp-block-button .wp-block-button__link {
+    font-weight: var(--theme-button-font-weight, 700);
+    font-size: var(--steelmark-font-size-base);
+    text-transform: var(--theme-button-text-transform, uppercase);
+    letter-spacing: var(--theme-button-letter-spacing, 0.03em);
+    transition: all var(--steelmark-transition);
+}
+
+.entry-content .wp-block-button .wp-block-button__link:hover {
+    transform: var(--steelmark-hover-lift-sm);
+    box-shadow: var(--steelmark-shadow-btn-hover);
+}
+
+.entry-content .wp-block-button.is-style-outline .wp-block-button__link {
+    background: transparent;
+    border: 2px solid var(--theme-palette-color-3);
+    color: var(--theme-palette-color-3);
+}
+
+.entry-content .wp-block-button.is-style-outline .wp-block-button__link:hover {
+    background-color: var(--theme-palette-color-3);
+    color: var(--theme-palette-color-7);
+}
+
+/* ---------- Details / Accordion ---------- */
+.entry-content .wp-block-details {
+    border: 1px solid var(--theme-border-color, #E5E7EB);
+    border-radius: var(--steelmark-card-radius, 20px);
+    margin-bottom: 0.75em;
+    overflow: hidden;
+}
+
+.entry-content .wp-block-details summary {
+    padding: 1rem 1.25rem;
+    font-weight: var(--steelmark-font-weight-semibold);
+    color: var(--theme-palette-color-4);
+    cursor: pointer;
+    transition: background-color var(--steelmark-transition-fast);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.entry-content .wp-block-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.entry-content .wp-block-details summary::after {
+    content: '+';
+    font-size: var(--steelmark-font-size-xl);
+    font-weight: 300;
+    color: var(--steelmark-text-muted);
+    transition: transform var(--steelmark-transition-fast);
+}
+
+.entry-content .wp-block-details[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.entry-content .wp-block-details summary:hover {
+    background-color: var(--theme-palette-color-5);
+}
+
+.entry-content .wp-block-details > *:not(summary) {
+    padding: 0 1.25rem 1rem;
+}
+
+/* ---------- Embed ---------- */
+.entry-content .wp-block-embed {
+    margin-bottom: 1.5em;
+}
+
+.entry-content .wp-block-embed .wp-block-embed__wrapper {
+    border-radius: var(--steelmark-card-radius, 20px);
+    overflow: hidden;
+}
+
+.entry-content .wp-block-embed .wp-block-embed__wrapper iframe {
+    width: 100%;
+    aspect-ratio: 16/9;
+    height: auto;
+}
+
+/* ---------- File / Download ---------- */
+.entry-content .wp-block-file {
+    margin-bottom: 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.entry-content .wp-block-file a:not(.wp-block-file__button) {
+    color: var(--theme-palette-color-3);
+    font-weight: var(--steelmark-font-weight-medium);
+    text-decoration: none;
+}
+
+.entry-content .wp-block-file a:not(.wp-block-file__button):hover {
+    color: var(--steelmark-cta-hover);
+}
+
+.entry-content .wp-block-file .wp-block-file__button {
+    background-color: var(--theme-button-background-initial-color, var(--theme-palette-color-3));
+    color: var(--theme-button-text-initial-color, var(--theme-palette-color-7));
+    border-radius: var(--steelmark-radius-pill);
+    padding: 0.5rem 1.25rem;
+    font-size: var(--steelmark-font-size-base);
+    font-weight: var(--theme-button-font-weight, 700);
+    text-transform: var(--theme-button-text-transform, uppercase);
+    letter-spacing: var(--theme-button-letter-spacing, 0.03em);
+    text-decoration: none;
+    transition: all var(--steelmark-transition);
+}
+
+.entry-content .wp-block-file .wp-block-file__button:hover {
+    background-color: var(--steelmark-cta-hover);
+    transform: var(--steelmark-hover-lift-xs);
+}
+
+/* ---------- Lists ---------- */
+.entry-content ul,
+.entry-content ol {
+    padding-left: 1.5em;
+    margin-bottom: 1.25em;
+}
+
+.entry-content li {
+    margin-bottom: 0.375em;
+    line-height: var(--theme-line-height, 1.6);
+}
+
+/* ---------- Blockquote ---------- */
+.entry-content blockquote {
+    border-left: 4px solid var(--theme-palette-color-1);
+    padding: 1rem 1.5rem;
+    margin: 1.5em 0;
+    background: var(--theme-palette-color-5);
+    border-radius: 0 var(--steelmark-radius-md) var(--steelmark-radius-md) 0;
+}
+
+.entry-content blockquote p {
+    font-size: var(--steelmark-font-size-lg);
+    font-style: italic;
+    color: var(--theme-palette-color-8);
+}
+
+/* ---------- Partner Logos Grid ---------- */
+.partner-logos.wp-block-gallery {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2rem 1.5rem;
+    align-items: center;
+    justify-items: center;
+    padding: 2rem 0;
+}
+
+.partner-logos .wp-block-image {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.partner-logos .wp-block-image img {
+    width: auto;
+    height: auto;
+    max-height: 60px;
+    max-width: 160px;
+    object-fit: contain;
+    aspect-ratio: unset;
+    border-radius: 0;
+    filter: grayscale(20%);
+    opacity: 0.85;
+    transition: filter var(--steelmark-transition), opacity var(--steelmark-transition), transform var(--steelmark-transition);
+}
+
+.partner-logos .wp-block-image:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: var(--steelmark-hover-zoom-lg);
+}
+
+@media (max-width: 1024px) {
+    .partner-logos.wp-block-gallery {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .partner-logos.wp-block-gallery {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem 1rem;
+    }
+
+    .partner-logos .wp-block-image img {
+        max-height: 45px;
+        max-width: 120px;
+    }
+}
+
+/* ==========================================================================
+   Partner Logo Grid — [partner_logos] shortcode
+   Used on front page, About, and potentially any page.
+   Moved here (from home.css) so the shortcode renders correctly regardless
+   of which CSS files are conditionally loaded.
+   ========================================================================== */
+
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+.partner-logo-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    padding: 6px;
+}
+
+.partner-logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.75;
+    transition: opacity var(--steelmark-transition), transform var(--steelmark-transition);
+}
+
+.partner-logo-item:hover .partner-logo {
+    opacity: 1;
+    transform: scale(1.08);
+}
+
+@media (max-width: 768px) {
+    .partners-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem 1.5rem;
+    }
+
+    .partner-logo-item {
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .partner-logo-item {
+        height: 45px;
+    }
+}
+
+/* ---------- Separator ---------- */
+.entry-content .wp-block-separator {
+    border: none;
+    border-top: 2px solid var(--theme-border-color, #E5E7EB);
+    margin: 2em 0;
+}
+
+.entry-content .wp-block-separator.is-style-wide {
+    max-width: none;
+}
+
+.entry-content .wp-block-separator.is-style-dots {
+    border: none;
+}
+
+/* ==========================================================================
+   About + Contact Page CSS — now handled by Greenshift _gspb_post_css.
+   Team card styles kept here since they're shared HTML rendered by gs_team_card().
+   ========================================================================== */
+
+/* ── About page "Vår historia" — left-align long text on mobile ── */
+@media (max-width: 767px) {
+    .gspb_text-id-gsbp-e1d2e3c {
+        text-align: left !important;
+    }
+}
+
+/* ── Section heading inside a standalone Greenshift container — center it ── */
+.gspb_container:has(> .gspb_heading:only-child) > .gspb_heading {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ── Team card row — narrower than default 1200px (About page only) ── */
+.gspb_row:has(.team-card):not(:has(.wpcf7)) > .gspb_row__content {
+    max-width: 960px !important;
+}
+
+/* ── Team cards (shared across About + Contact pages) ── */
+.team-card {
+    background: var(--theme-palette-color-7);
+    border: 1px solid var(--theme-border-color, #E5E7EB);
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    padding: 1.25rem 1.5rem;
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    column-gap: 1rem;
+    text-align: left;
+    height: auto;
+}
+
+.team-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    align-self: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--theme-palette-color-7);
+    letter-spacing: 0.05em;
+}
+
+.team-name,
+.team-role,
+.team-contact {
+    grid-column: 2;
+}
+
+.team-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+    color: var(--theme-headings-color);
+}
+
+.team-flags {
+    font-weight: normal;
+    font-size: 1rem;
+    display: inline-flex;
+    gap: 4px;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+.flag-icon {
+    width: 20px;
+    height: auto;
+    border-radius: 2px;
+    vertical-align: middle;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+}
+
+.team-role {
+    color: var(--steelmark-text-muted, #6B7280);
+    font-size: 1rem;
+    margin: 0 0 0.5rem;
+}
+
+.team-contact {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.team-contact a {
+    color: var(--theme-palette-color-3);
+    text-decoration: none;
+}
+
+.team-contact a:hover {
+    color: var(--steelmark-cta-hover);
+}
+
+/* ── Centered vertical layout for narrow columns (About page 3-col grid) ── */
+.gspb_row__col--4 > .team-card {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.gspb_row__col--4 > .team-card .team-avatar {
+    margin: 0 auto 0.75rem;
+}
+
+/* ── Contact page sidebar: equal-height stacked team cards ── */
+.gspb_row__col--5 > .gspb_container:has(.team-card) {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    max-width: 24rem;
+}
+
+.gspb_row__col--5 .team-card {
+    flex: 1;
+}
+

@@ -1,0 +1,18 @@
+# Ignore everything by default
+*
+
+# ----- Whitelist: tracked files -----
+
+# Project files
+!CLAUDE.md
+!wp_setup.sh
+!.gitignore
+
+# Custom child theme
+!wp-content/
+!wp-content/themes/
+!wp-content/themes/steelmark/
+!wp-content/themes/steelmark/**
+
+# Apache config
+!.htaccess
