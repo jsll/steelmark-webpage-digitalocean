@@ -164,21 +164,32 @@ if ($primary_cat) {
 
         <!-- Related products -->
         <?php
-        $related = new WP_Query([
-            'post_type'      => 'product_item',
-            'posts_per_page' => 4,
-            'post__not_in'   => [get_the_ID()],
-            'lang'           => $lang,
-            'no_found_rows'  => true,
-            'tax_query'      => ($terms && !is_wp_error($terms)) ? [
-                [
-                    'taxonomy' => 'product_category',
-                    'terms'    => wp_list_pluck($terms, 'term_id'),
-                ],
-            ] : [],
-            'orderby'        => 'date',
-            'order'          => 'DESC',
-        ]);
+        $related_ids_raw = get_post_meta(get_the_ID(), '_related_product_ids', true);
+
+        if ($related_ids_raw) {
+            $related_ids = array_filter(array_map('intval', explode(',', $related_ids_raw)));
+            $related = new WP_Query([
+                'post_type'      => 'product_item',
+                'post__in'       => $related_ids,
+                'orderby'        => 'post__in',
+                'posts_per_page' => 4,
+                'post_status'    => 'publish',
+                'no_found_rows'  => true,
+            ]);
+        } else {
+            $related = new WP_Query([
+                'post_type'      => 'product_item',
+                'posts_per_page' => 4,
+                'post__not_in'   => [get_the_ID()],
+                'lang'           => $lang,
+                'no_found_rows'  => true,
+                'tax_query'      => ($terms && !is_wp_error($terms)) ? [
+                    ['taxonomy' => 'product_category', 'terms' => wp_list_pluck($terms, 'term_id')],
+                ] : [],
+                'orderby'        => 'date',
+                'order'          => 'DESC',
+            ]);
+        }
 
         if ($related->have_posts()) : ?>
             <section class="product-related">

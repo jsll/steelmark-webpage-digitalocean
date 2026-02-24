@@ -14,5 +14,9 @@
 !wp-content/themes/steelmark/
 !wp-content/themes/steelmark/**
 
+# Scripts
+!scripts/
+!scripts/compute_related_products.py
+
 # Apache config
 !.htaccess
