@@ -4,8 +4,17 @@
 
 .bio-filter-bar {
     max-width: var(--steelmark-container-width, 1200px);
-    margin: 0 auto 1.5rem;
+    margin: 0 auto 2rem;
+    margin-block-end: 2rem;
     padding: 0 1.5rem;
+}
+
+/* Reset the negative margin-top that .gspb_row ~ .product-embed-grid applies
+   (products.css) when the filter bar sits between the brand row and the grid. */
+.bio-filter-bar + .product-embed-grid,
+.bio-filter-bar + .wp-block-group.product-embed-grid {
+    margin-top: 0 !important;
+    margin-block-start: 0 !important;
 }
 
 .bio-filter-inner {
