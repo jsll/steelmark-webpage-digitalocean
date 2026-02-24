@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 WordPress website for **Steelmark.fi** — a company selling greenhouse technology and products. The site serves three languages: Swedish (default), Finnish, and English.
 
 Project path: `/var/www/html/`
+GitHub repo: `git@github.com:jsll/steelmark-webpage-digitalocean.git`
 
 ## Scripting Rules
 
