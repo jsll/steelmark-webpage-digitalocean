@@ -1435,7 +1435,7 @@ function steelmark_quickview_build_data($product_id) {
     if ($terms && !is_wp_error($terms)) {
         foreach ($terms as $term) {
             $categories[] = [
-                'name' => $term->name,
+                'name' => html_entity_decode($term->name, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
                 'url'  => get_term_link($term),
             ];
         }
@@ -1445,7 +1445,7 @@ function steelmark_quickview_build_data($product_id) {
     $brand_terms = get_the_terms($product_id, 'product_brand');
     if ($brand_terms && !is_wp_error($brand_terms)) {
         $bt = $brand_terms[0];
-        $brand = ['name' => $bt->name, 'url' => get_term_link($bt)];
+        $brand = ['name' => html_entity_decode($bt->name, ENT_QUOTES | ENT_HTML5, 'UTF-8'), 'url' => get_term_link($bt)];
     }
 
     $content = apply_filters('the_content', $post->post_content);
@@ -1455,7 +1455,7 @@ function steelmark_quickview_build_data($product_id) {
 
     return [
         'id'         => $product_id,
-        'title'      => get_the_title($product_id),
+        'title'      => html_entity_decode(get_the_title($product_id), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
         'permalink'  => get_permalink($product_id),
         'image'      => $image,
         'thumbnail'  => $thumbnail,
