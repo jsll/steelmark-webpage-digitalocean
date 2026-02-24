@@ -336,6 +336,34 @@ function steelmark_enqueue_assets() {
 }
 add_action('wp_enqueue_scripts', 'steelmark_enqueue_assets');
 
+/**
+ * Add defer attribute to all child-theme scripts.
+ * All are non-critical for initial render and already load in the footer.
+ */
+function steelmark_defer_scripts($tag, $handle) {
+    $defer_handles = [
+        'splide-core',
+        'steelmark-inquiry-list',
+        'steelmark-product-carousel',
+        'steelmark-mega-menu-news',
+        'steelmark-mega-menu-hover-intent',
+        'steelmark-mobile-menu-toggle',
+        'steelmark-bio-filter',
+        'steelmark-fertilizer-filter',
+        'steelmark-quickview',
+        'steelmark-product-gallery',
+        'steelmark-hero-carousel',
+        'steelmark-fert-preview',
+    ];
+
+    if (in_array($handle, $defer_handles, true) && strpos($tag, 'defer') === false) {
+        $tag = str_replace(' src=', ' defer src=', $tag);
+    }
+
+    return $tag;
+}
+add_filter('script_loader_tag', 'steelmark_defer_scripts', 10, 2);
+
 /* =========================================================================
    2. INQUIRY DRAWER & QUICKVIEW MODAL (moved from footer.php)
    ========================================================================= */
@@ -426,10 +454,16 @@ function steelmark_hero_carousel_shortcode() {
             <?php foreach ($slides as $i => $slide) : ?>
                 <div class="hero-slide<?php echo $i === 0 ? ' active' : ''; ?>"
                      aria-hidden="<?php echo $i === 0 ? 'false' : 'true'; ?>">
-                    <?php echo wp_get_attachment_image($slide['image_id'], 'full', false, [
+                    <?php
+                    $img_attrs = [
                         'class'   => 'hero-slide-img',
                         'loading' => $i === 0 ? 'eager' : 'lazy',
-                    ]); ?>
+                    ];
+                    if ($i === 0) {
+                        $img_attrs['fetchpriority'] = 'high';
+                    }
+                    echo wp_get_attachment_image($slide['image_id'], 'full', false, $img_attrs);
+                    ?>
                     <div class="hero-slide-overlay">
                         <div class="hero-slide-content">
                             <h2 class="hero-slide-heading"><?php echo esc_html($slide['heading']); ?></h2>
