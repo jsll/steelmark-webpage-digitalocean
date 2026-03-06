@@ -20,6 +20,27 @@ function steelmark_color_scheme_meta() {
 }
 add_action('wp_head', 'steelmark_color_scheme_meta', -999);
 
+/**
+ * Enqueue product grid styles in the block editor so Classic Editor blocks
+ * displaying product cards render with the correct grid layout.
+ */
+function steelmark_editor_styles() {
+    $theme_dir = get_stylesheet_directory();
+    $theme_uri = get_stylesheet_directory_uri();
+    $path = $theme_dir . '/assets/css/products.css';
+    if (file_exists($path)) {
+        wp_enqueue_style('steelmark-editor-products', $theme_uri . '/assets/css/products.css', [], filemtime($path));
+    }
+}
+add_action('enqueue_block_editor_assets', 'steelmark_editor_styles');
+
+// Also inject into TinyMCE (used by Classic Editor / freeform blocks)
+function steelmark_mce_css($mce_css) {
+    $mce_css .= ', ' . get_stylesheet_directory_uri() . '/assets/css/products.css';
+    return $mce_css;
+}
+add_filter('mce_css', 'steelmark_mce_css');
+
 /* =========================================================================
    1. ASSET ENQUEUING
    ========================================================================= */
