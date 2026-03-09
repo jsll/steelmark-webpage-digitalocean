@@ -15,12 +15,12 @@
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid var(--theme-form-field-border-initial-color, var(--theme-border-color, #e2e8f0));
-    border-radius: var(--theme-form-field-border-radius, var(--steelmark-card-radius, 20px));
+    border-radius: var(--theme-form-field-border-radius, 20px);
     font-family: var(--wp--preset--font-family--inter, 'Inter', sans-serif);
-    font-size: var(--steelmark-font-size-base);
+    font-size: 0.9375rem;
     color: var(--theme-form-field-text-initial-color, var(--theme-palette-color-4, #1a1a1a));
     background: var(--theme-form-field-background-initial-color, var(--theme-palette-color-7));
-    transition: border-color var(--steelmark-transition-fast), box-shadow var(--steelmark-transition-fast);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
 }
 
@@ -31,7 +31,7 @@
 .wpcf7 textarea:focus {
     outline: none;
     border-color: var(--theme-form-field-border-focus-color, var(--theme-palette-color-1, #004170));
-    box-shadow: var(--steelmark-focus-ring);
+    box-shadow: 0 0 0 3px rgba(0, 65, 112, 0.1);
 }
 
 .wpcf7 select {
@@ -60,7 +60,7 @@
 }
 
 .wpcf7 select.wpcf7-not-valid {
-    border-color: var(--steelmark-color-error) !important;
+    border-color: #e53e3e !important;
 }
 
 .wpcf7 textarea {
@@ -74,20 +74,20 @@
     color: var(--theme-button-text-initial-color, var(--theme-palette-color-7));
     padding: var(--theme-button-padding, 0.75rem 2rem);
     border: none;
-    border-radius: var(--theme-button-border-radius, var(--steelmark-card-radius, 20px));
+    border-radius: var(--theme-button-border-radius, 20px);
     font-family: var(--wp--preset--font-family--inter, 'Inter', sans-serif);
-    font-size: var(--steelmark-font-size-base);
+    font-size: 0.9375rem;
     font-weight: var(--theme-button-font-weight, 700);
     text-transform: var(--theme-button-text-transform, uppercase);
     letter-spacing: var(--theme-button-letter-spacing, 0.03em);
     cursor: pointer;
-    transition: all var(--steelmark-transition);
+    transition: all 0.3s ease;
 }
 
 .wpcf7 input[type="submit"]:hover {
-    background-color: var(--steelmark-cta-hover);
-    transform: var(--steelmark-hover-lift-sm);
-    box-shadow: var(--steelmark-shadow-btn-hover);
+    background-color: #d78301;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 /* CF7 field spacing */
@@ -119,50 +119,50 @@
 
 /* ---------- CF7 Messages ---------- */
 .wpcf7-response-output {
-    border-radius: var(--steelmark-card-radius, 20px) !important;
+    border-radius: 20px !important;
     padding: 0.75rem 1rem !important;
-    font-size: var(--steelmark-font-size-base-sm);
+    font-size: 0.875rem;
     margin: 1rem 0 0 !important;
 }
 
 .wpcf7 form.sent .wpcf7-response-output {
     border-color: var(--theme-palette-color-2, #7DB242) !important;
-    background-color: var(--steelmark-form-success-bg);
-    color: var(--steelmark-color-success-text);
+    background-color: rgba(125, 178, 66, 0.08);
+    color: #3d6b10;
 }
 
 .wpcf7 form.invalid .wpcf7-response-output,
 .wpcf7 form.unaccepted .wpcf7-response-output {
-    border-color: var(--steelmark-color-error) !important;
-    background-color: var(--steelmark-form-error-bg);
-    color: var(--steelmark-color-error-text);
+    border-color: #e53e3e !important;
+    background-color: rgba(229, 62, 62, 0.08);
+    color: #c53030;
 }
 
 .wpcf7-not-valid-tip {
-    color: var(--steelmark-color-error);
-    font-size: var(--steelmark-font-size-sm);
+    color: #e53e3e;
+    font-size: 0.8125rem;
     margin-top: 0.25rem;
 }
 
 .wpcf7-not-valid {
-    border-color: var(--steelmark-color-error) !important;
+    border-color: #e53e3e !important;
 }
 
 /* ---------- Product inquiry label ---------- */
 .inquiry-product-label {
-    background: var(--steelmark-inquiry-label-bg);
+    background: rgba(0, 65, 112, 0.06);
     padding: 0.75rem 1rem;
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
     border-left: 3px solid var(--theme-palette-color-1, #004170);
     margin-bottom: 1rem;
-    font-size: var(--steelmark-font-size-base);
+    font-size: 0.9375rem;
 }
 
 /* ---------- Staff cards (contact page) ---------- */
 .staff-card {
     background: var(--theme-palette-color-6, #f8f9fa);
     padding: 1rem 1.25rem;
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
     margin-bottom: 0.75rem;
 }
 
@@ -177,7 +177,7 @@
 }
 
 .staff-card a:hover {
-    color: var(--steelmark-cta-hover);
+    color: #d78301;
 }
 
 /* Contact page layout — see blocks.css for full contact page styles */
@@ -186,7 +186,7 @@
 .footer-newsletter {
     background-color: var(--theme-palette-color-8);
     padding: 1.25rem 0;
-    border-top: 1px solid var(--steelmark-white-overlay-subtle);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer-newsletter .footer-inner {
@@ -198,9 +198,9 @@
 }
 
 .footer-newsletter .newsletter-desc {
-    color: var(--steelmark-text-on-dark);
+    color: rgba(255, 255, 255, 0.85);
     margin: 0;
-    font-size: var(--steelmark-font-size-base);
+    font-size: 0.9375rem;
 }
 
 .footer-newsletter .newsletter-btn {
@@ -210,17 +210,17 @@
     padding: 0.75rem 1.75rem;
     background: var(--theme-palette-color-3);
     color: var(--theme-palette-color-7);
-    font-weight: var(--steelmark-font-weight-bold);
-    font-size: var(--steelmark-font-size-base);
+    font-weight: 700;
+    font-size: 0.9375rem;
     text-decoration: none;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    border-radius: var(--steelmark-radius-sm);
-    transition: background var(--steelmark-transition-fast);
+    border-radius: 8px;
+    transition: background 0.2s ease;
 }
 
 .footer-newsletter .newsletter-btn:hover {
-    background: var(--steelmark-cta-hover);
+    background: #d78301;
 }
 
 .newsletter-form {
@@ -235,49 +235,49 @@
 
 .newsletter-form input[type="email"] {
     padding: 0.625rem 1rem;
-    border: 1px solid var(--steelmark-white-overlay-medium);
-    border-radius: var(--steelmark-card-radius, 20px);
-    background: var(--steelmark-white-overlay-subtle);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
     color: var(--theme-palette-color-7);
     font-family: var(--wp--preset--font-family--inter, 'Inter', sans-serif);
-    font-size: var(--steelmark-font-size-base-sm);
+    font-size: 0.875rem;
     min-width: 240px;
-    transition: border-color var(--steelmark-transition-fast), background-color var(--steelmark-transition-fast);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .newsletter-form input[type="email"]::placeholder {
-    color: var(--steelmark-white-overlay-heavy);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .newsletter-form input[type="email"]:focus {
     outline: none;
     border-color: var(--theme-palette-color-2, #7DB242);
-    background: var(--steelmark-white-overlay-light);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .newsletter-form input[type="submit"] {
     padding: 0.625rem 1.5rem;
     border: none;
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
     background: var(--theme-palette-color-2, #7DB242);
     color: var(--theme-palette-color-7);
     font-family: var(--wp--preset--font-family--inter, 'Inter', sans-serif);
-    font-size: var(--steelmark-font-size-base-sm);
-    font-weight: var(--steelmark-font-weight-semibold);
+    font-size: 0.875rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all var(--steelmark-transition);
+    transition: all 0.3s ease;
     white-space: nowrap;
 }
 
 .newsletter-form input[type="submit"]:hover {
-    background: var(--steelmark-green-hover);
-    transform: var(--steelmark-hover-lift-xs);
+    background: #6a9a38;
+    transform: translateY(-1px);
 }
 
 /* MC4WP response messages in footer */
 .footer-newsletter .mc4wp-alert {
     color: var(--theme-palette-color-7);
-    font-size: var(--steelmark-font-size-sm);
+    font-size: 0.8125rem;
     margin-top: 0.5rem;
 }
 

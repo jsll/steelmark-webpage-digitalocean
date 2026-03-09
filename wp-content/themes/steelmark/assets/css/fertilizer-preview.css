@@ -27,8 +27,8 @@
   --fp-n: #2d6a4f;
   --fp-p: #d4a017;
   --fp-k: #7b5ea7;
-  --fp-font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-  --fp-font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+  --fp-font-display: Georgia, 'Times New Roman', serif;
+  --fp-font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
 }
 
 /* ─── Page intro ─── */

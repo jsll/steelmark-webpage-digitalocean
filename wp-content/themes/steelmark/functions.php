@@ -107,8 +107,13 @@ function steelmark_enqueue_assets() {
         $enqueue_css('steelmark-home', 'home.css');
     }
 
-    // --- Blog pages + front page (news shortcode reuses blog-card styles) ---
-    if (is_front_page() || is_home() || is_singular('post') || is_category() || is_tag() || is_date() || is_author()) {
+    // --- Homepage: Greenshift swiper CSS (not enqueued by the plugin for swiper blocks) ---
+    if (is_front_page()) {
+        wp_enqueue_style('gsswiper');
+    }
+
+    // --- Blog pages ---
+    if (is_home() || is_singular('post') || is_category() || is_tag() || is_date() || is_author()) {
         $enqueue_css('steelmark-blog', 'blog.css');
     }
 
@@ -319,28 +324,8 @@ function steelmark_enqueue_assets() {
         }
     }
 
-    // Hero carousel JS (front page only)
-    if (is_front_page()) {
-        $carousel_path = $theme_dir . '/assets/js/hero-carousel.js';
-        if (file_exists($carousel_path)) {
-            wp_enqueue_script(
-                'steelmark-hero-carousel',
-                $theme_uri . '/assets/js/hero-carousel.js',
-                [],
-                filemtime($carousel_path),
-                true
-            );
-        }
-    }
-
     // --- Fertilizer layout preview page ---
     if (is_page_template('page-fertilizer-layout-preview.php')) {
-        wp_enqueue_style(
-            'steelmark-fert-preview-fonts',
-            'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap',
-            [],
-            null
-        );
         $enqueue_css('steelmark-fert-preview', 'fertilizer-preview.css');
 
         $fp_js_path = $theme_dir . '/assets/js/fertilizer-preview.js';
@@ -373,7 +358,6 @@ function steelmark_defer_scripts($tag, $handle) {
         'steelmark-fertilizer-filter',
         'steelmark-quickview',
         'steelmark-product-gallery',
-        'steelmark-hero-carousel',
         'steelmark-fert-preview',
     ];
 
@@ -414,121 +398,7 @@ function steelmark_footer_modals() {
 }
 add_action('wp_footer', 'steelmark_footer_modals');
 
-/* =========================================================================
-   3. HERO CAROUSEL SHORTCODE
-   ========================================================================= */
-
-/**
- * [hero_carousel] shortcode — renders the front page hero carousel.
- * Extracted from the old front-page.php template.
- */
-function steelmark_hero_carousel_shortcode() {
-    $lang = function_exists('pll_current_language') ? pll_current_language() : 'sv';
-
-    $cta_labels = [
-        'sv' => 'Läs mer',
-        'fi' => 'Lue lisää',
-        'en' => 'Read more',
-    ];
-    $cta = $cta_labels[$lang] ?? $cta_labels['sv'];
-
-    // Each: [attachment_id, heading_sv, heading_fi, heading_en, subtitle_sv, subtitle_fi, subtitle_en, target_page_id_sv]
-    $slides_data = [
-        [441, 'Fullständigt gödselsortiment',   'Täydellinen lannoitevalikoima',    'Complete fertilizer assortment',
-              'Allt från Haifa, K+S och LMI till din odling', 'Kaikkea Haifasta, K+S:stä ja LMI:stä viljelyyn', 'Everything from Haifa, K+S and LMI for your cultivation', 1242],
-        [294, 'Cultilene stenullsunderlag',      'Cultilene kivivillasubstraatti',    'Cultilene stone wool substrate',
-              'Högkvalitativa odlingsunderlag för professionella', 'Korkealaatuiset kasvualustat ammattilaisille', 'High-quality growing substrates for professionals', 1240],
-        [443, 'Biologiska nyttodjur',            'Biologiset hyötyeläimet',           'Biological beneficial insects',
-              'Naturlig växtskydd från Bioline AgroSciences', 'Luonnollinen kasvinsuojelu Bioline AgroSciencesilta', 'Natural crop protection from Bioline AgroSciences', 1244],
-        [213, 'Multispan plastblockhus',         'Multispan muoviblokkikasvihuoneet', 'Multispan plastic block greenhouses',
-              'Modern växthusteknik för nordiska förhållanden', 'Modernia kasvihuonetekniikkaa pohjoismaisiin olosuhteisiin', 'Modern greenhouse technology for Nordic conditions', 1254],
-        [1772, 'Dutch Plantin kokosunderlag',       'Dutch Plantin kookossubstraatti',    'Dutch Plantin coco substrates',
-               'Högkvalitativa kokosunderlag för professionell odling', 'Korkealaatuiset kookossubstraatit ammattimaiseen viljelyyn', 'High-quality coco substrates for professional growing', 1240],
-    ];
-
-    $heading_key  = ['sv' => 1, 'fi' => 2, 'en' => 3];
-    $subtitle_key = ['sv' => 4, 'fi' => 5, 'en' => 6];
-    $slides = [];
-    foreach ($slides_data as $s) {
-        $heading  = $s[$heading_key[$lang] ?? 1];
-        $subtitle = $s[$subtitle_key[$lang] ?? 4];
-        $target_id = $s[7];
-        if (function_exists('pll_get_post') && $lang !== 'sv') {
-            $translated = pll_get_post($target_id, $lang);
-            if ($translated) {
-                $target_id = $translated;
-            }
-        }
-        $slides[] = [
-            'image_id' => $s[0],
-            'heading'  => $heading,
-            'subtitle' => $subtitle,
-            'link'     => get_permalink($target_id),
-            'cta'      => $cta,
-        ];
-    }
-
-    ob_start();
-    ?>
-    <section class="hero-carousel" aria-label="<?php esc_attr_e('Featured products', 'steelmark'); ?>">
-        <div class="hero-slides">
-            <?php foreach ($slides as $i => $slide) : ?>
-                <div class="hero-slide<?php echo $i === 0 ? ' active' : ''; ?>"
-                     aria-hidden="<?php echo $i === 0 ? 'false' : 'true'; ?>">
-                    <?php
-                    $img_attrs = [
-                        'class'   => 'hero-slide-img',
-                        'loading' => $i === 0 ? 'eager' : 'lazy',
-                    ];
-                    if ($i === 0) {
-                        $img_attrs['fetchpriority'] = 'high';
-                    }
-                    echo wp_get_attachment_image($slide['image_id'], 'full', false, $img_attrs);
-                    ?>
-                    <div class="hero-slide-overlay">
-                        <div class="hero-slide-content">
-                            <h2 class="hero-slide-heading"><?php echo esc_html($slide['heading']); ?></h2>
-                            <div class="hero-slide-details">
-                                <?php if (!empty($slide['subtitle'])) : ?>
-                                <p class="hero-slide-subtitle"><?php echo esc_html($slide['subtitle']); ?></p>
-                                <?php endif; ?>
-                                <a href="<?php echo esc_url($slide['link']); ?>" class="hero-slide-cta">
-                                    <?php echo esc_html($slide['cta']); ?>
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-
-        <button class="hero-arrow hero-arrow--prev" aria-label="<?php esc_attr_e('Previous slide', 'steelmark'); ?>">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-        <button class="hero-arrow hero-arrow--next" aria-label="<?php esc_attr_e('Next slide', 'steelmark'); ?>">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-
-        <div class="hero-dots" role="tablist" aria-label="<?php esc_attr_e('Slide navigation', 'steelmark'); ?>">
-            <?php for ($i = 0; $i < count($slides); $i++) : ?>
-                <button class="hero-dot<?php echo $i === 0 ? ' active' : ''; ?>"
-                        role="tab"
-                        aria-selected="<?php echo $i === 0 ? 'true' : 'false'; ?>"
-                        aria-label="<?php printf(esc_attr__('Slide %d', 'steelmark'), $i + 1); ?>"></button>
-            <?php endfor; ?>
-        </div>
-    </section>
-    <?php
-    return ob_get_clean();
-}
-add_shortcode('hero_carousel', 'steelmark_hero_carousel_shortcode');
+/* Section 3 (Hero Carousel) removed — migrated to Greenshift swiper blocks in page content. */
 
 /* =========================================================================
    3b. PRODUCT CATEGORIES GRID SHORTCODE
@@ -705,104 +575,7 @@ function steelmark_product_categories_grid_shortcode($atts = []) {
 }
 add_shortcode('product_categories_grid', 'steelmark_product_categories_grid_shortcode');
 
-/* =========================================================================
-   3c. VALUE PROPOSITION SHORTCODE
-   ========================================================================= */
-
-/**
- * [steelmark_value_prop] shortcode — renders 3 value proposition cards.
- */
-function steelmark_value_prop_shortcode() {
-    $lang = function_exists('pll_current_language') ? pll_current_language() : 'sv';
-
-    $i18n = [
-        'sv' => [
-            'main_heading' => 'Steelmark erbjuder allt vad en professionell växthusodlare behöver!',
-            'heading' => 'Varför välja oss?',
-            'cards'   => [
-                [
-                    'title' => 'Stort lager',
-                    'text'  => 'Vi har som mål att ha så stor del av produkter i lager — det ger snabb och flexibel leverans.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 10l11-8 11 8"/><line x1="3" y1="9" x2="3" y2="22"/><line x1="21" y1="9" x2="21" y2="22"/><line x1="3" y1="11" x2="21" y2="11"/><rect x="4" y="14.5" width="2.5" height="2.5"/><rect x="4" y="17" width="2.5" height="2.5"/><rect x="4" y="19.5" width="2.5" height="2.5"/><rect x="6.5" y="17" width="2.5" height="2.5"/><rect x="6.5" y="19.5" width="2.5" height="2.5"/><rect x="17.5" y="14.5" width="2.5" height="2.5"/><rect x="17.5" y="17" width="2.5" height="2.5"/><rect x="17.5" y="19.5" width="2.5" height="2.5"/><rect x="15" y="17" width="2.5" height="2.5"/><rect x="15" y="19.5" width="2.5" height="2.5"/></svg>',
-                ],
-                [
-                    'title' => 'Direkt import',
-                    'text'  => 'Vi importerar direkt från tillverkarna — färre mellanhänder och ett mera konkurrenskraftigt pris.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="3.5" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M5.5 7h13"/><path d="M5.5 17h13"/></svg>',
-                ],
-                [
-                    'title' => 'Allt för odlaren',
-                    'text'  => 'Från gödsel och substrat till belysning och klimatstyrning — allt en professionell odlare behöver.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="20" height="11" rx="1.5"/><line x1="2" y1="15" x2="22" y2="15"/><path d="M8 10V7a1 1 0 011-1h6a1 1 0 011 1v3"/><path d="M10 4h4"/><rect x="10" y="13" width="4" height="4" rx="0.5"/></svg>',
-                ],
-            ],
-        ],
-        'fi' => [
-            'main_heading' => 'Steelmark tarjoaa kaiken, mitä ammattimainen kasvihuoneviljelijä tarvitsee!',
-            'heading' => 'Miksi valita meidät?',
-            'cards'   => [
-                [
-                    'title' => 'Laaja varasto',
-                    'text'  => 'Tavoitteenamme on pitää suurta osaa tuotteista varastossa — se takaa nopean ja joustavan toimituksen.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 10l11-8 11 8"/><line x1="3" y1="9" x2="3" y2="22"/><line x1="21" y1="9" x2="21" y2="22"/><line x1="3" y1="11" x2="21" y2="11"/><rect x="4" y="14.5" width="2.5" height="2.5"/><rect x="4" y="17" width="2.5" height="2.5"/><rect x="4" y="19.5" width="2.5" height="2.5"/><rect x="6.5" y="17" width="2.5" height="2.5"/><rect x="6.5" y="19.5" width="2.5" height="2.5"/><rect x="17.5" y="14.5" width="2.5" height="2.5"/><rect x="17.5" y="17" width="2.5" height="2.5"/><rect x="17.5" y="19.5" width="2.5" height="2.5"/><rect x="15" y="17" width="2.5" height="2.5"/><rect x="15" y="19.5" width="2.5" height="2.5"/></svg>',
-                ],
-                [
-                    'title' => 'Suora tuonti',
-                    'text'  => 'Tuomme tuotteemme suoraan valmistajilta — vähemmän välikäsiä ja kilpailukykyisemmät hinnat.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="3.5" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M5.5 7h13"/><path d="M5.5 17h13"/></svg>',
-                ],
-                [
-                    'title' => 'Kaikki viljelijälle',
-                    'text'  => 'Lannoitteista ja substraateista valaistukseen ja ilmastointiin — kaikkea mitä ammattimainen viljelijä tarvitsee.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="20" height="11" rx="1.5"/><line x1="2" y1="15" x2="22" y2="15"/><path d="M8 10V7a1 1 0 011-1h6a1 1 0 011 1v3"/><path d="M10 4h4"/><rect x="10" y="13" width="4" height="4" rx="0.5"/></svg>',
-                ],
-            ],
-        ],
-        'en' => [
-            'main_heading' => 'Steelmark offers everything a professional greenhouse grower needs!',
-            'heading' => 'Why choose us?',
-            'cards'   => [
-                [
-                    'title' => 'Large stock',
-                    'text'  => 'We aim to keep a large share of products in stock — ensuring fast and flexible delivery.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 10l11-8 11 8"/><line x1="3" y1="9" x2="3" y2="22"/><line x1="21" y1="9" x2="21" y2="22"/><line x1="3" y1="11" x2="21" y2="11"/><rect x="4" y="14.5" width="2.5" height="2.5"/><rect x="4" y="17" width="2.5" height="2.5"/><rect x="4" y="19.5" width="2.5" height="2.5"/><rect x="6.5" y="17" width="2.5" height="2.5"/><rect x="6.5" y="19.5" width="2.5" height="2.5"/><rect x="17.5" y="14.5" width="2.5" height="2.5"/><rect x="17.5" y="17" width="2.5" height="2.5"/><rect x="17.5" y="19.5" width="2.5" height="2.5"/><rect x="15" y="17" width="2.5" height="2.5"/><rect x="15" y="19.5" width="2.5" height="2.5"/></svg>',
-                ],
-                [
-                    'title' => 'Direct import',
-                    'text'  => 'We import directly from manufacturers — fewer intermediaries and more competitive pricing.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="3.5" ry="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M5.5 7h13"/><path d="M5.5 17h13"/></svg>',
-                ],
-                [
-                    'title' => 'Everything for growers',
-                    'text'  => 'From fertilizers and substrates to lighting and climate control — everything a professional grower needs.',
-                    'icon'  => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="10" width="20" height="11" rx="1.5"/><line x1="2" y1="15" x2="22" y2="15"/><path d="M8 10V7a1 1 0 011-1h6a1 1 0 011 1v3"/><path d="M10 4h4"/><rect x="10" y="13" width="4" height="4" rx="0.5"/></svg>',
-                ],
-            ],
-        ],
-    ];
-    $t = $i18n[$lang] ?? $i18n['sv'];
-
-    ob_start();
-    ?>
-    <div class="home-section value-prop-section">
-        <div class="home-section-inner">
-            <h2 class="value-prop-main-heading"><?php echo esc_html($t['main_heading']); ?></h2>
-            <p class="value-prop-subheading"><?php echo esc_html($t['heading']); ?></p>
-            <div class="value-prop-cards">
-                <?php foreach ($t['cards'] as $card) : ?>
-                <div class="value-prop-card">
-                    <div class="value-prop-card-icon"><?php echo $card['icon']; ?></div>
-                    <h3 class="value-prop-card-title"><?php echo esc_html($card['title']); ?></h3>
-                    <p class="value-prop-card-text"><?php echo esc_html($card['text']); ?></p>
-                </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </div>
-    <?php
-    return ob_get_clean();
-}
-add_shortcode('steelmark_value_prop', 'steelmark_value_prop_shortcode');
+/* Section 3c (Value Proposition) removed — migrated to Greenshift blocks in page content. */
 
 /* =========================================================================
    4. CATEGORY PAGE REDIRECT
@@ -1286,99 +1059,7 @@ function steelmark_partner_logos_shortcode() {
 }
 add_shortcode('partner_logos', 'steelmark_partner_logos_shortcode');
 
-/* =========================================================================
-   10b. LATEST NEWS SHORTCODE
-   ========================================================================= */
-
-/**
- * [steelmark_news] shortcode — renders latest 3 blog posts as cards.
- *
- * Reuses .blog-grid / .blog-card markup from blog.css and
- * .news-section / .news-header styles from home.css.
- */
-function steelmark_news_shortcode() {
-    $lang = function_exists('pll_current_language') ? pll_current_language() : 'sv';
-
-    $i18n = [
-        'sv' => ['heading' => 'Nyheter',  'more' => 'Fler nyheter',  'blog_slug' => 'nyheter'],
-        'fi' => ['heading' => 'Uutiset',  'more' => 'Lisää uutisia', 'blog_slug' => 'uutiset'],
-        'en' => ['heading' => 'News',     'more' => 'More news',     'blog_slug' => 'news'],
-    ];
-    $t = $i18n[$lang] ?? $i18n['sv'];
-
-    $args = [
-        'post_type'      => 'post',
-        'posts_per_page' => 3,
-        'post_status'    => 'publish',
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-    ];
-    if (function_exists('pll_current_language')) {
-        $args['lang'] = $lang;
-    }
-
-    $posts = get_posts($args);
-    if (empty($posts)) {
-        return '';
-    }
-
-    $blog_page = get_page_by_path($t['blog_slug']);
-    $blog_url  = $blog_page ? get_permalink($blog_page) : home_url('/' . $t['blog_slug'] . '/');
-
-    ob_start();
-    ?>
-    <div class="home-section news-section">
-        <div class="home-section-inner">
-            <div class="news-header">
-                <h2 class="news-heading"><?php echo esc_html($t['heading']); ?></h2>
-            </div>
-            <div class="blog-grid">
-                <?php foreach ($posts as $post) :
-                    $thumb_id  = get_post_thumbnail_id($post->ID);
-                    $categories = get_the_category($post->ID);
-                    $cat_name   = !empty($categories) ? $categories[0]->name : '';
-                    $excerpt    = has_excerpt($post->ID)
-                        ? get_the_excerpt($post->ID)
-                        : wp_trim_words(strip_shortcodes($post->post_content), 25, '&hellip;');
-                ?>
-                <article class="blog-card">
-                    <a href="<?php echo esc_url(get_permalink($post)); ?>" class="blog-card-link">
-                        <?php if ($thumb_id) : ?>
-                        <div class="blog-card-image">
-                            <?php echo wp_get_attachment_image($thumb_id, 'medium_large', false, [
-                                'class'   => 'wp-post-image',
-                                'loading' => 'lazy',
-                            ]); ?>
-                        </div>
-                        <?php endif; ?>
-                        <div class="blog-card-content">
-                            <div class="blog-card-meta">
-                                <?php if ($cat_name) : ?>
-                                <span class="blog-card-category"><?php echo esc_html($cat_name); ?></span>
-                                <?php endif; ?>
-                                <time datetime="<?php echo esc_attr(get_the_date('c', $post)); ?>"><?php echo esc_html(get_the_date('', $post)); ?></time>
-                            </div>
-                            <h3 class="blog-card-title"><?php echo esc_html(get_the_title($post)); ?></h3>
-                            <p class="blog-card-excerpt"><?php echo esc_html($excerpt); ?></p>
-                        </div>
-                    </a>
-                </article>
-                <?php endforeach; ?>
-            </div>
-            <div class="news-footer">
-                <a href="<?php echo esc_url($blog_url); ?>" class="news-more-link">
-                    <?php echo esc_html($t['more']); ?>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <?php
-    return ob_get_clean();
-}
-add_shortcode('steelmark_news', 'steelmark_news_shortcode');
+/* Section 10b (Latest News) removed — migrated to wp:latest-posts block in page content. */
 
 /* =========================================================================
    11. AJAX HANDLERS — PRODUCT QUICKVIEW

@@ -8,7 +8,7 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: var(--steelmark-hero-overlay);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.2) 40%, rgba(0, 0, 0, 0.4) 100%);
     pointer-events: none;
     z-index: 1;
 }
@@ -19,11 +19,11 @@
 }
 
 .hero-section[data-type="type-2"] > header[class*="ct-container"] > .page-title {
-    text-shadow: var(--steelmark-heading-shadow);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 .hero-section[data-type="type-2"] > header[class*="ct-container"] > .page-description {
-    text-shadow: var(--steelmark-text-shadow);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* ---------- Hero title vertical centering ---------- */
@@ -76,7 +76,7 @@
 
 /* ---------- Intro text — larger body paragraph for partner descriptions ---------- */
 .entry-content .intro-text {
-    font-size: var(--steelmark-font-size-intro);
+    font-size: 1.0625rem;
     line-height: var(--theme-line-height, 1.7);
     color: var(--theme-text-color);
 }
@@ -137,7 +137,7 @@
 .entry-content .wp-block-freeform img {
     max-width: 100%;
     height: auto;
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
 }
 
 .entry-content .wp-block-freeform table {
@@ -156,7 +156,7 @@
 .entry-content .wp-block-freeform th {
     background-color: var(--theme-palette-color-5);
     color: var(--theme-palette-color-4);
-    font-weight: var(--steelmark-font-weight-semibold);
+    font-weight: 600;
 }
 
 /* ---------- Images ---------- */
@@ -165,23 +165,23 @@
 }
 
 .entry-content .wp-block-image img {
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
     overflow: hidden;
-    transition: transform var(--steelmark-transition);
+    transition: transform 0.3s ease;
 }
 
 .entry-content .wp-block-image figure {
     overflow: hidden;
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
 }
 
 .entry-content .wp-block-image:hover img {
-    transform: var(--steelmark-hover-zoom-sm);
+    transform: scale(1.02);
 }
 
 .entry-content .wp-block-image figcaption {
-    font-size: var(--steelmark-font-size-base-sm);
-    color: var(--steelmark-text-muted);
+    font-size: 0.875rem;
+    color: #6c757d;
     margin-top: 0.5rem;
     text-align: center;
 }
@@ -212,7 +212,7 @@
 
 /* ---------- Cover ---------- */
 .entry-content .wp-block-cover {
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
     overflow: hidden;
     margin-bottom: 1.5em;
     min-height: 300px;
@@ -234,7 +234,7 @@
 .entry-content .wp-block-cover h6,
 .entry-content .wp-block-cover p {
     color: var(--theme-palette-color-7) !important;
-    text-shadow: var(--steelmark-text-shadow);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 /* ---------- Columns ---------- */
@@ -281,15 +281,15 @@
 /* ---------- Buttons (extras beyond Blocksy theme mods) ---------- */
 .entry-content .wp-block-button .wp-block-button__link {
     font-weight: var(--theme-button-font-weight, 700);
-    font-size: var(--steelmark-font-size-base);
+    font-size: 0.9375rem;
     text-transform: var(--theme-button-text-transform, uppercase);
     letter-spacing: var(--theme-button-letter-spacing, 0.03em);
-    transition: all var(--steelmark-transition);
+    transition: all 0.3s ease;
 }
 
 .entry-content .wp-block-button .wp-block-button__link:hover {
-    transform: var(--steelmark-hover-lift-sm);
-    box-shadow: var(--steelmark-shadow-btn-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .entry-content .wp-block-button.is-style-outline .wp-block-button__link {
@@ -306,17 +306,17 @@
 /* ---------- Details / Accordion ---------- */
 .entry-content .wp-block-details {
     border: 1px solid var(--theme-border-color, #E5E7EB);
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
     margin-bottom: 0.75em;
     overflow: hidden;
 }
 
 .entry-content .wp-block-details summary {
     padding: 1rem 1.25rem;
-    font-weight: var(--steelmark-font-weight-semibold);
+    font-weight: 600;
     color: var(--theme-palette-color-4);
     cursor: pointer;
-    transition: background-color var(--steelmark-transition-fast);
+    transition: background-color 0.2s ease;
     list-style: none;
     display: flex;
     justify-content: space-between;
@@ -329,10 +329,10 @@
 
 .entry-content .wp-block-details summary::after {
     content: '+';
-    font-size: var(--steelmark-font-size-xl);
+    font-size: 1.25rem;
     font-weight: 300;
-    color: var(--steelmark-text-muted);
-    transition: transform var(--steelmark-transition-fast);
+    color: #6c757d;
+    transition: transform 0.2s ease;
 }
 
 .entry-content .wp-block-details[open] summary::after {
@@ -353,7 +353,7 @@
 }
 
 .entry-content .wp-block-embed .wp-block-embed__wrapper {
-    border-radius: var(--steelmark-card-radius, 20px);
+    border-radius: 20px;
     overflow: hidden;
 }
 
@@ -374,30 +374,30 @@
 
 .entry-content .wp-block-file a:not(.wp-block-file__button) {
     color: var(--theme-palette-color-3);
-    font-weight: var(--steelmark-font-weight-medium);
+    font-weight: 500;
     text-decoration: none;
 }
 
 .entry-content .wp-block-file a:not(.wp-block-file__button):hover {
-    color: var(--steelmark-cta-hover);
+    color: #d78301;
 }
 
 .entry-content .wp-block-file .wp-block-file__button {
     background-color: var(--theme-button-background-initial-color, var(--theme-palette-color-3));
     color: var(--theme-button-text-initial-color, var(--theme-palette-color-7));
-    border-radius: var(--steelmark-radius-pill);
+    border-radius: 999px;
     padding: 0.5rem 1.25rem;
-    font-size: var(--steelmark-font-size-base);
+    font-size: 0.9375rem;
     font-weight: var(--theme-button-font-weight, 700);
     text-transform: var(--theme-button-text-transform, uppercase);
     letter-spacing: var(--theme-button-letter-spacing, 0.03em);
     text-decoration: none;
-    transition: all var(--steelmark-transition);
+    transition: all 0.3s ease;
 }
 
 .entry-content .wp-block-file .wp-block-file__button:hover {
-    background-color: var(--steelmark-cta-hover);
-    transform: var(--steelmark-hover-lift-xs);
+    background-color: #d78301;
+    transform: translateY(-1px);
 }
 
 /* ---------- Lists ---------- */
@@ -418,22 +418,32 @@
     padding: 1rem 1.5rem;
     margin: 1.5em 0;
     background: var(--theme-palette-color-5);
-    border-radius: 0 var(--steelmark-radius-md) var(--steelmark-radius-md) 0;
+    border-radius: 0 12px 12px 0;
 }
 
 .entry-content blockquote p {
-    font-size: var(--steelmark-font-size-lg);
+    font-size: 1.125rem;
     font-style: italic;
     color: var(--theme-palette-color-8);
 }
 
 /* ---------- Partner Logos Grid ---------- */
 .partner-logos.wp-block-gallery {
-    grid-template-columns: repeat(6, 1fr);
+    display: grid !important;
+    grid-template-columns: repeat(5, 1fr) !important;
     gap: 2rem 1.5rem;
     align-items: center;
     justify-items: center;
     padding: 2rem 0;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Override WP gallery flex width on grid children */
+.partner-logos.wp-block-gallery figure.wp-block-image:not(#individual-image) {
+    width: auto !important;
+    margin: 0;
 }
 
 .partner-logos .wp-block-image {
@@ -443,7 +453,7 @@
     justify-content: center;
 }
 
-.partner-logos .wp-block-image img {
+.partner-logos.wp-block-gallery figure.wp-block-image:not(#individual-image) img {
     width: auto;
     height: auto;
     max-height: 60px;
@@ -453,19 +463,13 @@
     border-radius: 0;
     filter: grayscale(20%);
     opacity: 0.85;
-    transition: filter var(--steelmark-transition), opacity var(--steelmark-transition), transform var(--steelmark-transition);
+    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
 }
 
-.partner-logos .wp-block-image:hover img {
+.partner-logos.wp-block-gallery figure.wp-block-image:hover img {
     filter: grayscale(0%);
     opacity: 1;
-    transform: var(--steelmark-hover-zoom-lg);
-}
-
-@media (max-width: 1024px) {
-    .partner-logos.wp-block-gallery {
-        grid-template-columns: repeat(4, 1fr);
-    }
+    transform: scale(1.08);
 }
 
 @media (max-width: 640px) {
@@ -474,7 +478,7 @@
         gap: 1.5rem 1rem;
     }
 
-    .partner-logos .wp-block-image img {
+    .partner-logos.wp-block-gallery figure.wp-block-image:not(#individual-image) img {
         max-height: 45px;
         max-width: 120px;
     }
@@ -510,7 +514,7 @@
     height: 100%;
     object-fit: contain;
     opacity: 0.75;
-    transition: opacity var(--steelmark-transition), transform var(--steelmark-transition);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .partner-logo-item:hover .partner-logo {
@@ -640,7 +644,7 @@
 }
 
 .team-role {
-    color: var(--steelmark-text-muted, #6B7280);
+    color: #6c757d;
     font-size: 1rem;
     margin: 0 0 0.5rem;
 }
@@ -657,7 +661,7 @@
 }
 
 .team-contact a:hover {
-    color: var(--steelmark-cta-hover);
+    color: #d78301;
 }
 
 /* ── Centered vertical layout for narrow columns (About page 3-col grid) ── */
