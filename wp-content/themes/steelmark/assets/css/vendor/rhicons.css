@@ -1,0 +1,20 @@
+/* Greenshift rhicons font — minimal subset for iconlist checkmarks on the frontend */
+@font-face {
+    font-display: block;
+    font-family: rhicons;
+    font-style: normal;
+    font-weight: 400;
+    src: url('../../fonts/rhicons.woff2') format('woff2');
+}
+.rhicon {
+    speak: never;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: rhicons !important;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 1;
+    text-transform: none;
+}
+.rhi-check:before { content: "\e834"; }

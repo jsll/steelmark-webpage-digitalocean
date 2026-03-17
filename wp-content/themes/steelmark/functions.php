@@ -73,6 +73,7 @@ function steelmark_enqueue_assets() {
     $enqueue_css('steelmark-forms', 'forms.css');
     $enqueue_css('steelmark-inquiry', 'inquiry-list.css');
     $enqueue_css('steelmark-splide-core', 'vendor/splide-core.min.css');
+    $enqueue_css('steelmark-rhicons', 'vendor/rhicons.css');
 
     // --- Product pages only ---
     if ($is_product_context || is_front_page()) {
