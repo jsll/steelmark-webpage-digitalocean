@@ -924,3 +924,29 @@ function steelmark_mega_menu_news_shortcode() {
 }
 add_shortcode('steelmark_mega_menu_news', 'steelmark_mega_menu_news_shortcode');
 
+/* =========================================================================
+   14. BLOCKSY QUERY BLOCK — AND RELATION FOR MULTI-TAXONOMY INCLUDES
+   ========================================================================= */
+
+/**
+ * Blocksy query blocks use OR when multiple taxonomies are in include_term_ids.
+ * Product category pages need AND (e.g., brand=haifa AND category=godsel).
+ * This filter changes the tax_query relation to AND when both product_brand
+ * and product_category are present in include_term_ids.
+ */
+add_filter('blocksy:general:blocks:query:args', function ($query_args, $attributes) {
+    if (empty($attributes['include_term_ids'])) {
+        return $query_args;
+    }
+
+    $include_keys = array_keys($attributes['include_term_ids']);
+    $has_brand = in_array('product_brand', $include_keys, true);
+    $has_category = in_array('product_category', $include_keys, true);
+
+    if ($has_brand && $has_category && !empty($query_args['tax_query'])) {
+        $query_args['tax_query']['relation'] = 'AND';
+    }
+
+    return $query_args;
+}, 10, 2);
+
