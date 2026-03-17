@@ -20,7 +20,6 @@ The site is built on the **Blocksy Landscape** starter site design system. All n
 ### Blocks & Content
 - **Use Gutenberg + Greenshift blocks** for all marketing/content sections (hero, value props, category grids, news, partner logos)
 - **No new shortcodes** for layout/content rendering. Existing justified shortcodes:
-  - `[product_categories_grid]` — used on Products Overview pages (IDs 1709/1710/1711)
   - `[partner_logos]` — used on About Us pages (IDs 1255/1256/1257)
   - `[steelmark_mega_menu_news]` — Blocksy header builder mega menu (no block alternative)
   - `[contact-form-7]` and `[instagram-feed]` — third-party plugin shortcodes

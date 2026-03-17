@@ -793,84 +793,6 @@
     padding-top: 0;
 }
 
-/* ==========================================================================
-   Product card embeds — within category landing pages
-   ========================================================================== */
-
-.product-embed-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1.25rem;
-    margin: 0 0 2rem;
-}
-
-/* Reduce gap between brand/spotlight sections and their product grids */
-.gspb_row ~ .wp-block-group.product-embed-grid {
-    margin-top: -16px;
-}
-
-.product-embed-grid.centered-grid {
-    grid-template-columns: repeat(3, minmax(200px, 260px));
-    justify-content: center;
-}
-
-.product-embed-grid > .product-card-embed {
-    width: 100%;
-    max-width: none;
-    margin: 0;
-}
-
-.product-card-embed {
-    border-radius: 20px;
-    overflow: hidden;
-    background: var(--theme-palette-color-7);
-    border: none;
-    box-shadow: 0px 10px 20px rgba(41, 51, 61, 0.07);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.product-card-embed:hover {
-    transform: translateY(-4px);
-    box-shadow: 0px 12px 24px rgba(41, 51, 61, 0.12);
-}
-
-.product-embed-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-}
-
-.product-embed-image {
-    width: 100%;
-    aspect-ratio: 4/3;
-    object-fit: contain;
-    padding: 0.75rem;
-    display: block;
-    background: var(--theme-palette-color-7);
-}
-
-.product-embed-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    aspect-ratio: 4/3;
-    background: var(--theme-palette-color-5);
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--theme-palette-color-1);
-    opacity: 0.3;
-}
-
-.product-embed-title {
-    display: block;
-    padding: 0.875rem 1rem;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--theme-palette-color-4);
-    line-height: 1.3;
-}
-
 /* ---------- Responsive — Single product ---------- */
 @media (max-width: 1024px) {
     .product-top {
@@ -913,14 +835,6 @@
         padding: 0 0 1.5rem;
         margin: 0.5rem 0.75rem 0;
         max-width: calc(100% - 1.5rem);
-    }
-
-    .product-embed-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    }
-
-    .product-embed-grid.centered-grid {
-        grid-template-columns: repeat(2, 1fr);
     }
 
     .gallery-thumb {
@@ -1084,11 +998,6 @@
         grid-template-columns: 1fr;
     }
 
-    .product-embed-grid,
-    .product-embed-grid.centered-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
-    }
 }
 
 /* ==========================================================================
