@@ -350,6 +350,14 @@ function steelmark_defer_scripts($tag, $handle) {
 add_filter('script_loader_tag', 'steelmark_defer_scripts', 10, 2);
 
 /* =========================================================================
+   1b. BLOCK EDITOR ASSETS
+   ========================================================================= */
+
+/* Block validation fix script removed — root cause (missing wp-block-greenshift-blocks-row class)
+   was fixed directly in the database. The deprecated handler with save:null was causing
+   layout destruction (one letter per line) when blocks were migrated. */
+
+/* =========================================================================
    2. INQUIRY DRAWER & QUICKVIEW MODAL (moved from footer.php)
    ========================================================================= */
 
@@ -932,20 +940,66 @@ add_shortcode('steelmark_mega_menu_news', 'steelmark_mega_menu_news_shortcode');
 /**
  * Blocksy query blocks use OR when multiple taxonomies are in include_term_ids.
  * Product category pages need AND (e.g., brand=haifa AND category=godsel).
- * This filter changes the tax_query relation to AND when both product_brand
- * and product_category are present in include_term_ids.
+ *
+ * Also wires up include_post_ids / exclude_post_ids block attributes which are
+ * defined in Blocksy's block.json but not in providesContext. We capture them
+ * from the parent block via render_block_data and apply them via uniqueId.
  */
-add_filter('blocksy:general:blocks:query:args', function ($query_args, $attributes) {
-    if (empty($attributes['include_term_ids'])) {
-        return $query_args;
+
+// Capture include/exclude post IDs from query block attributes before render
+add_filter('render_block_data', function ($parsed_block) {
+    if ($parsed_block['blockName'] !== 'blocksy/query') {
+        return $parsed_block;
     }
 
-    $include_keys = array_keys($attributes['include_term_ids']);
-    $has_brand = in_array('product_brand', $include_keys, true);
-    $has_category = in_array('product_category', $include_keys, true);
+    $attrs = $parsed_block['attrs'] ?? [];
+    $uid = $attrs['uniqueId'] ?? '';
+    if (!$uid) {
+        return $parsed_block;
+    }
 
-    if ($has_brand && $has_category && !empty($query_args['tax_query'])) {
-        $query_args['tax_query']['relation'] = 'AND';
+    global $steelmark_query_post_filters;
+    if (!isset($steelmark_query_post_filters)) {
+        $steelmark_query_post_filters = [];
+    }
+
+    if (!empty($attrs['include_post_ids']['ids'])) {
+        $steelmark_query_post_filters[$uid]['include'] = $attrs['include_post_ids']['ids'];
+    }
+    if (!empty($attrs['exclude_post_ids']['ids'])) {
+        $steelmark_query_post_filters[$uid]['exclude'] = $attrs['exclude_post_ids']['ids'];
+    }
+
+    return $parsed_block;
+});
+
+add_filter('blocksy:general:blocks:query:args', function ($query_args, $attributes) {
+    // AND relation when both brand and category are specified
+    if (!empty($attributes['include_term_ids'])) {
+        $include_keys = array_keys($attributes['include_term_ids']);
+        $has_brand = in_array('product_brand', $include_keys, true);
+        $has_category = in_array('product_category', $include_keys, true);
+
+        if ($has_brand && $has_category && !empty($query_args['tax_query'])) {
+            $query_args['tax_query']['relation'] = 'AND';
+        }
+    }
+
+    // Apply stored include/exclude post ID filters by uniqueId
+    $uid = $attributes['uniqueId'] ?? '';
+    global $steelmark_query_post_filters;
+
+    if ($uid && !empty($steelmark_query_post_filters[$uid])) {
+        $filters = $steelmark_query_post_filters[$uid];
+
+        if (!empty($filters['include'])) {
+            $query_args['post__in'] = array_map('intval', $filters['include']);
+        }
+
+        if (!empty($filters['exclude'])) {
+            $existing = isset($query_args['post__not_in']) ? $query_args['post__not_in'] : [];
+            $query_args['post__not_in'] = array_merge($existing, array_map('intval', $filters['exclude']));
+        }
     }
 
     return $query_args;

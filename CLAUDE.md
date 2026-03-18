@@ -13,6 +13,16 @@ GitHub repo: `git@github.com:jsll/steelmark-webpage-digitalocean.git`
 
 - **All three languages must be handled.** Any script that modifies the website (content, pages, products, categories, etc.) must apply changes to all three languages: Swedish (`sv`), Finnish (`fi`), and English (`en`). Never create a script that only targets one language.
 
+### Greenshift Block Content Rules
+When programmatically creating or modifying Greenshift block content (via WP-CLI, PHP scripts, or database queries):
+
+- **Never encode dashes as `u002d`** in block comment JSON attributes or HTML class names. Always use literal `-` and `--`. The encoding `u002d` breaks Greenshift's JavaScript which expects actual dashes (e.g., `gspb_row--gutter-custom-0`, not `gspb_rowu002du002dgutter-custom-0`). This causes column width calculations like `calc(50% - 10010px)` instead of `calc(50% - 25px)`.
+- **CSS variable references must use real dashes**: `var(--theme-palette-color-5)`, never `var(u002du002dtheme-palette-color-5)`.
+- **Row blocks require `wp-block-greenshift-blocks-row`** class on the outer div (added by `useBlockProps.save()` in Greenshift v12.8+).
+- **Do not set `displayStyles: false`** on row blocks unless intentional — the default is `true`.
+- **After any database content changes**, flush APCu cache and restart Apache: `wp cache flush --allow-root && systemctl restart apache2`. The APCu object cache serves stale content otherwise.
+- **Delete autosave revisions** after bulk DB updates to prevent "more recent autosave" prompts: `DELETE FROM wp_posts WHERE post_type = 'revision' AND post_name LIKE '%autosave%'`.
+
 ## Design System: Blocksy Landscape + Greenshift
 
 The site is built on the **Blocksy Landscape** starter site design system. All new work must follow these rules:
@@ -57,7 +67,7 @@ The site is built on the **Blocksy Landscape** starter site design system. All n
 
 - Theme: **Blocksy** parent + custom `steelmark` child theme (in `/var/www/html/wp-content/themes/steelmark/`)
 - Theme companion: Blocksy Companion (required for header/footer builder)
-- Page builder: **Greenshift** (v12.8.4) — used for all page content layout
+- Page builder: **Greenshift** (v12.8.7) — used for all page content layout
 - Multilingual: Polylang (free; upgrade to WPML later if needed)
 - Custom fields: ACF (free; upgrade to Pro later)
 - CPT management: CPT UI — `product_item` custom post type with `product_category` taxonomy

@@ -15,25 +15,31 @@
     if (path.indexOf('/fi/') === 0) lang = 'fi';
     else if (path.indexOf('/en/') === 0) lang = 'en';
 
-    // Category definitions: key → list of product titles (case-insensitive exact match)
-    var categories = {
-        aphids:       ['Adalia bipunctata', 'Aphelinus abdominalis', 'Aphidius colemani',
-                       'Aphidius ervi', 'Aphidius matricariae', 'Aphidius mix',
-                       'Aphidoletes aphidimyza', 'Chrysoperla carnea', 'Macrolophus pygmaeus'],
-        thrips:       ['Amblyseius cucumeris', 'Amblyseius montdorensis', 'Amblyseius swirskii',
-                       'Orius spp.', 'Steinernema feltiae', 'Hypoaspis miles', 'Thripline'],
-        whiteflies:   ['Amblyseius montdorensis', 'Amblyseius swirskii', 'Encarsia formosa',
-                       'Encarsia-Eretmocerus mix', 'Eretmocerus eremicus', 'Macrolophus pygmaeus',
-                       'Cryptolaemus montrouzieri'],
-        spidermites:  ['Amblyseius californicus', 'Amblyseius andersoni', 'Feltiella acarisuga',
-                       'Phytoseiulus persimilis'],
-        fungusgnats:  ['Atheta coriaria', 'Hypoaspis miles', 'Steinernema feltiae'],
-        mitefood:     ['Bugfood E', 'Thyreophagus entomophagus', 'Predafix+'],
-        pollination:  ['Humlor', 'Kimalaiset', 'Bumblebees'],
-        caterpillars: ['Trichogramma spp.', 'Turex', 'Steinernema carpocapsae'],
-        leafminers:   ['Diglyphus isaea'],
-        nematodes:    ['Heterorhabditis spp.', 'Steinernema kraussei']
+    // Category definitions: filter key → taxonomy slug per language
+    var categorySlugs = {
+        sv: {
+            aphids: 'bladloss', thrips: 'trips', whiteflies: 'vita-flygare',
+            spidermites: 'spinn', fungusgnats: 'sorgmyggor', mitefood: 'kvalsterfoda',
+            pollination: 'pollinering', caterpillars: 'fjarilslarver',
+            leafminers: 'minerarflugor', nematodes: 'nematoder', humlor: 'humlor'
+        },
+        fi: {
+            aphids: 'kirvat-fi', thrips: 'ripsiaiset-fi', whiteflies: 'jauhiaiset-fi',
+            spidermites: 'vihannespunkki-fi', fungusgnats: 'sienisaaski-fi',
+            mitefood: 'punkkiruokaa-fi', pollination: 'polytys-fi',
+            caterpillars: 'perhonen-toukat-fi', leafminers: 'miinaajakarpeset-fi',
+            nematodes: 'nematodit-fi', humlor: 'kimalaiset-fi'
+        },
+        en: {
+            aphids: 'aphids-en', thrips: 'thrips-en', whiteflies: 'whiteflies-en',
+            spidermites: 'spider-mites-en', fungusgnats: 'fungus-gnats-en',
+            mitefood: 'mite-food-en', pollination: 'pollination-en',
+            caterpillars: 'caterpillars-en', leafminers: 'leaf-miners-en',
+            nematodes: 'nematodes-en', humlor: 'bumblebees-en'
+        }
     };
+
+    var slugs = categorySlugs[lang] || categorySlugs.sv;
 
     // Translated button labels
     var labels = {
@@ -83,44 +89,44 @@
 
     var t = labels[lang] || labels.sv;
 
-    // Find ALL product-embed-grids on the page (FI may have products split across multiple grids)
-    var grids = document.querySelectorAll('.product-embed-grid');
+    // Find ALL query block grids on the page
+    var grids = document.querySelectorAll('.wp-block-blocksy-query');
     if (!grids.length) return;
 
     var allCards = [];
     grids.forEach(function (g) {
-        var cards = g.querySelectorAll('.product-card-embed');
+        var cards = g.querySelectorAll('.wp-block-post');
         cards.forEach(function (c) { allCards.push(c); });
     });
     if (!allCards.length) return;
 
-    // Tag each card with its categories
+    // Tag each card with its categories using taxonomy CSS classes
     var cardData = [];
+    var filterKeys = ['aphids', 'thrips', 'whiteflies', 'spidermites', 'fungusgnats',
+                      'mitefood', 'pollination', 'caterpillars', 'leafminers', 'nematodes', 'humlor'];
+
     allCards.forEach(function (card) {
-        var titleEl = card.querySelector('.product-embed-title');
-        var title = titleEl ? titleEl.textContent.trim() : '';
-        var titleLower = title.toLowerCase();
         var matched = [];
 
-        Object.keys(categories).forEach(function (cat) {
-            categories[cat].forEach(function (keyword) {
-                if (titleLower === keyword.toLowerCase()) {
-                    matched.push(cat);
-                }
-            });
+        filterKeys.forEach(function (cat) {
+            var slug = slugs[cat];
+            if (slug && card.classList.contains('product_category-' + slug)) {
+                matched.push(cat);
+            }
         });
 
-        // Deduplicate
-        var unique = [];
-        matched.forEach(function (m) {
-            if (unique.indexOf(m) === -1) unique.push(m);
-        });
+        // Merge humlor into pollination
+        if (matched.indexOf('humlor') !== -1 && matched.indexOf('pollination') === -1) {
+            matched.push('pollination');
+        }
+        // Remove humlor from matched (it's merged into pollination)
+        matched = matched.filter(function (m) { return m !== 'humlor'; });
 
-        if (unique.length === 0) {
-            unique.push('other');
+        if (matched.length === 0) {
+            matched.push('other');
         }
 
-        cardData.push({ el: card, cats: unique });
+        cardData.push({ el: card, cats: matched });
     });
 
     // Determine which category buttons have at least one product
@@ -169,7 +175,7 @@
 
             // Show/hide empty grids (hide a grid entirely when none of its cards are visible)
             grids.forEach(function (g) {
-                var hasVisible = g.querySelector('.product-card-embed:not(.bio-hidden)');
+                var hasVisible = g.querySelector('.wp-block-post:not(.bio-hidden)');
                 g.classList.toggle('bio-hidden', !hasVisible);
             });
 

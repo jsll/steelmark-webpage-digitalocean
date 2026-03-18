@@ -9,10 +9,8 @@
     padding: 0 1.5rem 2.5rem;
 }
 
-/* Reset the negative margin-top that .gspb_row ~ .product-embed-grid applies
-   (products.css) when the filter bar sits between the brand row and the grid. */
-.bio-filter-bar + .product-embed-grid,
-.bio-filter-bar + .wp-block-group.product-embed-grid {
+/* Reset negative margin when the filter bar sits between content and the grid. */
+.bio-filter-bar + .wp-block-blocksy-query {
     margin-top: 0 !important;
     margin-block-start: 0 !important;
 }
@@ -55,7 +53,12 @@
 }
 
 /* Hidden product cards */
-.product-card-embed.bio-hidden {
+.wp-block-post.bio-hidden {
+    display: none;
+}
+
+/* Hidden empty grids */
+.wp-block-blocksy-query.bio-hidden {
     display: none;
 }
 
@@ -66,6 +69,14 @@
     color: #6c757d;
     padding: 2rem 0;
     font-size: 0.9375rem;
+}
+
+/* Featured product grids — contain images instead of cropping.
+   Blocksy inlines object-fit:cover and aspect-ratio on the img,
+   so !important is needed to override. */
+.wp-block-blocksy-query[data-id^="bio-"] .wp-block-post img {
+    object-fit: contain !important;
+    background: var(--theme-palette-color-6, #F3F4F6);
 }
 
 /* ---------- Responsive ---------- */
