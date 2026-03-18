@@ -17,4 +17,4 @@
     line-height: 1;
     text-transform: none;
 }
-.rhi-check:before { content: "\e834"; }
+.rhi-check:before { content: "\f00c"; }
